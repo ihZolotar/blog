@@ -18,6 +18,7 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->string('tag');
             $table->string('alias');
+            $table->string('user_id');
             $table->text('intro');
             $table->text('body');
             $table->timestamps();

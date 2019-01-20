@@ -86,22 +86,24 @@
             @foreach($posts as $post)
 
                 <h2>{{ $post->title }}</h2>
-                <p>{{ $post->intro }}</p>
                 <div>
                     <strong>Tag:</strong>
                     @foreach($post->tags as $tag)
                         <a href="{{route('tagPage', $tag->name)}}" class="label label-info">{{ $tag->name }}</a>
                     @endforeach
                 </div>
-                @if (Auth::user())
+                <p>{{ $post->intro }}</p>
                 <p><a href="/posts/{{$post->alias}}" class="btn btn-default">Читать далее</a></p>
-                <p><a href="/posts/{{$post->alias}}/edit" class="btn btn-primary">Редактировать</a></p>
-                <form action="/posts/{{$post->alias}}" method="post">
-                    {{csrf_field()}}
-                    {!! method_field('delete') !!}
-                    <button type="submit" class="btn btn-danger">Удалить</button>
-                </form>
+                @auth
+                @if (Auth::user()->id == $post->user_id)
+                    <p><a href="/posts/{{$post->alias}}/edit" class="btn btn-primary">Редактировать</a></p>
+                    <form action="/posts/{{$post->alias}}" method="post">
+                        {{csrf_field()}}
+                        {!! method_field('delete') !!}
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
                 @endif
+                @endauth
             @endforeach
         </div>
         <?php echo $posts->render(); ?>
