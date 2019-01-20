@@ -6,8 +6,16 @@ use App\Comment;
 use App\Post;
 use Illuminate\Http\Request;
 
+/**
+ * Class CommentController
+ * @package App\Http\Controllers
+ */
 class CommentController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $comment = new Comment;
@@ -19,6 +27,10 @@ class CommentController extends Controller
         return back();
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function replyStore(Request $request)
     {
         $reply = new Comment();
@@ -30,6 +42,13 @@ class CommentController extends Controller
 
             $post->comments()->save($reply);
         }
+
+        return back();
+    }
+
+    public function destroy(Comment $comment, $id)
+    {
+        $comment->findOrFail($id)->delete();
 
         return back();
     }
