@@ -1,113 +1,128 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-    <title>Laravel</title>
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-
-    <!-- Styles -->
-    <style>
-        html, body {
-            background-color: #fff;
-            color: #636b6f;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 200;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .full-height {
-            height: 100vh;
-        }
-
-        .flex-center {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-        }
-
-        .position-ref {
-            position: relative;
-        }
-
-        .top-right {
-            position: absolute;
-            right: 10px;
-            top: 18px;
-        }
-
-        .content {
-            text-align: center;
-        }
-
-        .title {
-            font-size: 84px;
-        }
-
-        .links > a {
-            color: #636b6f;
-            padding: 0 25px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: .1rem;
-            text-decoration: none;
-            text-transform: uppercase;
-        }
-
-        .m-b-md {
-            margin-bottom: 30px;
-        }
-    </style>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-</head>
-<body>
-<div class="flex-center position-ref full-height">
-    @if (Route::has('login'))
-        <div class="top-right links">
-            @auth
-                <a href="{{ url('/home') }}">Home</a>
-            @else
-                <a href="{{ route('login') }}">Login</a>
-
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}">Register</a>
-                @endif
-            @endauth
-        </div>
-    @endif
-
-    <div class="content">
+@section('content')
+    <div class="container">
         <div class="row">
-            @foreach($posts as $post)
+            <!-- Blog Entries Column -->
+            <div class="col-md-8">
+                <h1 class="my-4">Page Heading
+                    <small>Secondary Text</small>
+                </h1>
+                <!-- Blog Post -->
+                @foreach($posts as $post)
+                    <div class="card mb-4">
+                        <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ $post->title }}</h2>
+                            <p class="card-text">
+                                <strong>Tag:</strong>
+                                @foreach($post->tags as $tag)
+                                    <a href="{{route('tagPage', $tag->name)}}"
+                                       class="label label-info">{{ $tag->name }}</a>
+                                @endforeach
+                            </p>
+                            <p>{{ $post->intro }}</p>
+                            <div class="dropdown">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Dropdown link
+                                </a>
 
-                <h2>{{ $post->title }}</h2>
-                <div>
-                    <strong>Tag:</strong>
-                    @foreach($post->tags as $tag)
-                        <a href="{{route('tagPage', $tag->name)}}" class="label label-info">{{ $tag->name }}</a>
-                    @endforeach
-                </div>
-                <p>{{ $post->intro }}</p>
-                <p><a href="/posts/{{$post->alias}}" class="btn btn-default">Читать далее</a></p>
-                @auth
-                @if (Auth::user()->id == $post->user_id)
-                    <p><a href="/posts/{{$post->alias}}/edit" class="btn btn-primary">Редактировать</a></p>
-                    <form action="/posts/{{$post->alias}}" method="post">
-                        {{csrf_field()}}
-                        {!! method_field('delete') !!}
-                        <button type="submit" class="btn btn-danger">Удалить</button>
-                    </form>
-                @endif
-                @endauth
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+                            {{--@auth--}}
+                                {{--@if (Auth::user()->id == $post->user_id)--}}
+                                    {{--<a class="btn btn-primary" href="/posts/{{$post->alias}}/edit">--}}
+                                        {{--Редактировать--}}
+                                    {{--</a>--}}
+                                    {{--<form action="/posts/{{$post->alias}}" method="post">--}}
+                                        {{--{{csrf_field()}}--}}
+                                        {{--{!! method_field('delete') !!}--}}
+                                        {{--<button type="submit" class="btn btn-danger">--}}
+                                            {{--Удалить--}}
+                                        {{--</button>--}}
+                                    {{--</form>--}}
+                                {{--@endif--}}
+                            {{--@endauth--}}
+                            {{--<a href="/posts/{{$post->alias}}" class="btn btn-primary">Read More--}}
+                                {{--&rarr;--}}
+                            {{--</a>--}}
+                        </div>
+                        <div class="card-footer text-muted">
+                            Posted on January 1, 2017 by
+                            <a href="#">Start Bootstrap</a>
+                        </div>
+
+                    </div>
             @endforeach
+            <!-- Pagination -->
+                <ul class="pagination justify-content-center mb-4">
+                    <li class="page-item">
+                        {{ $posts->render() }}
+                    </li>
+                </ul>
+            </div>
+            <!-- Sidebar Widgets Column -->
+            <div class="col-md-4">
+                <!-- Search Widget -->
+                <div class="card my-4">
+                    <h5 class="card-header">Search</h5>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button">Go!</button>
+              </span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Categories Widget -->
+                <div class="card my-4">
+                    <h5 class="card-header">Categories</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a href="#">Web Design</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">HTML</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Freebies</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a href="#">JavaScript</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">CSS</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Tutorials</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Side Widget -->
+                <div class="card my-4">
+                    <h5 class="card-header">Side Widget</h5>
+                    <div class="card-body">
+                        You can put anything you want inside of these side widgets. They are easy to use, and feature
+                        the
+                        new Bootstrap 4 card containers!
+                    </div>
+                </div>
+            </div>
         </div>
-        <?php echo $posts->render(); ?>
     </div>
-</div>
-</body>
-</html>
+@endsection
