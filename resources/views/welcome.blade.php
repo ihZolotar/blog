@@ -13,7 +13,35 @@
                     <div class="card mb-4">
                         <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
                         <div class="card-body">
-                            <h2 class="card-title">{{ $post->title }}</h2>
+                            <div class="row">
+                                <div class="col-md-11">
+                                    <h2 class="card-title">{{ $post->title }}</h2>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-cog"></i>
+                                        </button>
+                                        <div class="dropdown-menu float-right " aria-labelledby="dropdownMenuButton">
+                                            @auth
+                                                @if (Auth::user()->id == $post->user_id)
+                                                    <a class="btn btn-primary" href="/posts/{{$post->alias}}/edit">
+                                                        Редактировать
+                                                    </a>
+                                                    <form action="/posts/{{$post->alias}}" method="post">
+                                                        {{csrf_field()}}
+                                                        {!! method_field('delete') !!}
+                                                        <button type="submit" class="btn btn-danger">
+                                                            Удалить
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            @endauth
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <p class="card-text">
                                 <strong>Tag:</strong>
                                 @foreach($post->tags as $tag)
@@ -22,38 +50,12 @@
                                 @endforeach
                             </p>
                             <p>{{ $post->intro }}</p>
-                            <div class="dropdown">
-                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Dropdown link
-                                </a>
-
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </div>
-                            {{--@auth--}}
-                                {{--@if (Auth::user()->id == $post->user_id)--}}
-                                    {{--<a class="btn btn-primary" href="/posts/{{$post->alias}}/edit">--}}
-                                        {{--Редактировать--}}
-                                    {{--</a>--}}
-                                    {{--<form action="/posts/{{$post->alias}}" method="post">--}}
-                                        {{--{{csrf_field()}}--}}
-                                        {{--{!! method_field('delete') !!}--}}
-                                        {{--<button type="submit" class="btn btn-danger">--}}
-                                            {{--Удалить--}}
-                                        {{--</button>--}}
-                                    {{--</form>--}}
-                                {{--@endif--}}
-                            {{--@endauth--}}
-                            {{--<a href="/posts/{{$post->alias}}" class="btn btn-primary">Read More--}}
-                                {{--&rarr;--}}
-                            {{--</a>--}}
+                            <a href="/posts/{{$post->alias}}" class="btn btn-primary">Read More
+                                &rarr;
+                            </a>
                         </div>
                         <div class="card-footer text-muted">
-                            Posted on January 1, 2017 by
-                            <a href="#">Start Bootstrap</a>
+                            Posted on January 1, 2019
                         </div>
 
                     </div>
