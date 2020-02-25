@@ -28,7 +28,6 @@ Route::get('/posts/{post}/edit', "HomeController@edit");
 Route::patch('/posts/{post}', "HomeController@update")->name('posts.update');
 Route::delete('/posts/{post}', "HomeController@destroy");
 Route::post('/reply/store', 'CommentController@replyStore')->name('reply.add');
-Route::delete('/comment/{id}', "CommentController@destroy")->name('commentDestroy');
 
 Auth::routes();
 
