@@ -10,6 +10,7 @@
                     <div class="form-group">
                         <label for="title">Title:</label>
                         <input class="form-control" type="text" name="title" id="title">
+                        <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
                     </div>
                     <div class="form-group">
                         <label for="alias">Alias:</label>
