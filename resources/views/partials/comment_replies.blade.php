@@ -1,13 +1,6 @@
 @foreach($comments as $comment)
     <div class="display-comment">
         <strong>{{ $comment->user->name }}</strong>
-        @if($comment->user->id == Auth::user()->id)
-        <form action="{{route('commentDestroy', $comment->id)}}" method="post">
-            {{csrf_field()}}
-            {!! method_field('delete') !!}
-            <button type="submit" class="btn btn-danger">Удалить</button>
-        </form>
-        @endif
         <p>{{ $comment->body }}</p>
         <a href="" id="reply"></a>
         <form method="post" action="{{ route('reply.add') }}">
