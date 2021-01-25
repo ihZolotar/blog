@@ -2,31 +2,96 @@
 
 @section('content')
     <div class="container">
-        <div class="col-sm-8 blog-main">
-            <div>
-                <strong>Tag:</strong>
-                @foreach($post->tags as $tag)
-                    <a href="{{route('tagPage', $tag->name)}}" class="label label-info">{{ $tag->name }}</a>
-                @endforeach
-            </div>
-            <div class="blog-post">
-                <h2 class="blog-post-title">{{$post->title}}</h2>
-                <p>{{$post->body}}</p>
-            </div>
-            <h4>Display Comments</h4>
-            @include('partials.comment_replies', ['comments' => $post->comments, 'post_id' => $post->id])
-            <hr />
-            <h4>Add comment</h4>
-            <form method="post" action="{{ route('comment.add') }}">
-                @csrf
-                <div class="form-group">
-                    <input type="text" name="comment_body" class="form-control" required/>
-                    <input type="hidden" name="post_id" value="{{ $post->id }}" />
+        <div class="row">
+            <!-- Post Content Column -->
+            <div class="col-lg-8">
+                <!-- Title -->
+                <h1 class="mt-4">{{$post->title}}</h1>
+                <!-- Date/Time -->
+                <p>Posted on January 1, 2019 at 12:00 PM</p>
+                <hr>
+                <!-- Preview Image -->
+                <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
+                <hr>
+                <!-- Post Content -->
+                <p class="lead">{{$post->body}}</p>
+                <hr>
+                <hr/>
+                <div class="card my-4">
+                    <h5 class="card-header">Leave a Comment:</h5>
+                    <div class="card-body">
+                        <form method="post" action="{{ route('comment.add') }}">
+                            @csrf
+                            <div class="form-group">
+                                <textarea type="text" name="comment_body" class="form-control" rows="3"></textarea>
+                                <input type="hidden" name="post_id" value="{{ $post->id }}"/>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-warning" value="Add Comment" />
+                <h4>Display Comments</h4>
+                @include('partials.comment_replies', ['comments' => $post->comments, 'post_id' => $post->id])
+            </div>
+            <!-- Sidebar Widgets Column -->
+            <div class="col-md-4">
+                <!-- Search Widget -->
+                <div class="card my-4">
+                    <h5 class="card-header">Search</h5>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="button">
+                                    Go!
+                                </button>
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </form>
+                <!-- Categories Widget -->
+                <div class="card my-4">
+                    <h5 class="card-header">Categories</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a href="#">Web Design</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">HTML</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Freebies</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a href="#">JavaScript</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">CSS</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Tutorials</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Side Widget -->
+                <div class="card my-4">
+                    <h5 class="card-header">Side Widget</h5>
+                    <div class="card-body">
+                        You can put anything you want inside of these side widgets. They are easy to use, and feature
+                        the new Bootstrap 4 card containers!
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
